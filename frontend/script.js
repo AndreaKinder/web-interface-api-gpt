@@ -5,7 +5,7 @@ async function sendPrompt() {
   responseDiv.innerHTML = "Loading...";
 
   try {
-    const response = await fetch('http://backend:5000/api/generate', {
+    const response = await fetch('/api/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

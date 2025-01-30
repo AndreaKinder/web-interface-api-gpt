@@ -1,12 +1,11 @@
 const express = require('express');
-const cors = require('cors');
 const dotenv = require('dotenv');
-const { OpenAI } = require('openai');
+const { OpenAIApi, Configuration } = require('openai');
+const path = require('path');
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -15,9 +14,10 @@ if (!OPENAI_API_KEY) {
     throw new Error("No se encontró la clave de API de OpenAI en las variables de entorno.");
 }
 
-const openai = new OpenAI({
+const configuration = new Configuration({
     apiKey: OPENAI_API_KEY,
 });
+const openai = new OpenAIApi(configuration);
 
 app.post('/api/generate', async (req, res) => {
     const { prompt } = req.body;
@@ -27,7 +27,7 @@ app.post('/api/generate', async (req, res) => {
     }
 
     try {
-        const response = await openai.chat.completions.create({
+        const response = await openai.createChatCompletion({
             model: "gpt-4-turbo",
             messages: [
                 {
@@ -46,11 +46,17 @@ app.post('/api/generate', async (req, res) => {
             presence_penalty: 0
         });
 
-        res.json({ response: response.choices[0].message.content });
-        console.log(response);
+        res.json({ response: response.data.choices[0].message.content });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+});
+
+// Servir archivos estáticos del frontend
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
