@@ -48,3 +48,16 @@ button:hover {
     white-space: pre-line;
     text-align: left;
 }
+
+.response-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.response-container .response {
+    width: 100%;
+    max-width: 500px;
+}
