@@ -1,5 +1,5 @@
 # Utiliza una imagen base de Node.js
-FROM node:18-slim
+FROM node:20
 
 # Define el directorio de trabajo
 WORKDIR /app
@@ -15,4 +15,4 @@ COPY backend/ .
 EXPOSE 5000
 
 # Comando para ejecutar la app
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
