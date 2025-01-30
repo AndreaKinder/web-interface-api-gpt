@@ -7,10 +7,11 @@ async function sendPrompt() {
   try {
     const response = await fetch('http://localhost:5000/api/generate', {
       method: 'POST',
+      mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ prompt: prompt })
+      body: JSON.stringify({ prompt })
     });
 
     if (!response.ok) {
